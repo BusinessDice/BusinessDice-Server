@@ -3,16 +3,15 @@ package com.spring.server.game;
 import com.spring.server.game.entity.BusinessCardEntity;
 import com.spring.server.game.entity.GamePhase;
 import com.spring.server.game.entity.ProjectCardEntity;
-import com.spring.server.game.exception.FullGameException;
-import com.spring.server.game.exception.GameOverException;
-import com.spring.server.game.exception.IncorrectPasswordException;
-import com.spring.server.game.exception.TurnNotPossibleException;
+import com.spring.server.game.exception.*;
 
 import java.util.Map;
 
 import static com.spring.server.game.entity.GamePhase.*;
 
 public class Game {
+
+    private final CardData cardData;
 
     private final String name;
     private final String password;
@@ -24,6 +23,7 @@ public class Game {
     private GamePhase phase;
 
     public Game(String name, String password, int playerCount) {
+        this.cardData = new CardData();
         this.name = name;
         this.password = password;
         this.players = new Player[playerCount];
@@ -32,6 +32,18 @@ public class Game {
         this.phase = GamePhase.VORBEREITUNG;
     }
 
+    /**
+     * Takes the next free slot in the game. If the same player name already exists, a player will take his slot.<br>
+     * This makes rejoining available.<br>
+     * <ul>
+     *     <li>Game Phase: {@link GamePhase#VORBEREITUNG}</li>
+     *     <li>When the game is full: Game Phase: {@link GamePhase#WUERFELN}</li>
+     * </ul>
+     *
+     * @param playerName player identification
+     * @throws IncorrectPasswordException Permission denied
+     * @throws FullGameException          Game is full and can not be joined
+     */
     public void join(String playerName) throws IncorrectPasswordException, FullGameException {
         for (int i = 0; i < players.length; i++) {
             if (players[i] == null) {
@@ -47,34 +59,103 @@ public class Game {
         throw new FullGameException(this.name, this.players.length);
     }
 
-    public void executeRoll(String playerName, boolean rollTwoDices) throws TurnNotPossibleException {
+    /**
+     * <ol>
+     *     <li>Validates the execute request.</li>
+     *     <li>Validates the availability of the card.</li>
+     *     <li>Purchases the card. Books on the Player and Board.</li>
+     *     <li>Checks if the game is over.</li>
+     *     <li>Next player can roll the dice.</li>
+     * </ol>
+     *
+     * @param playerName   player identification
+     * @param rollTwoDices option to roll with two dices, if project is purchased.
+     * @throws TurnNotPossibleException retry the turn with other parameters
+     */
+    public void executeRoll(String playerName, boolean rollTwoDices) throws TurnNotPossibleException, SpecialCardException {
         checkPossibleTurn(playerName, WUERFELN);
-        Player player = players[pointer];
-        if (rollTwoDices && !player.hasProject(ProjectCardEntity.BAHNHOF)) {
+        // checks if rollTwoDices is available when it is selected
+        if (rollTwoDices && !players[pointer].hasProject(ProjectCardEntity.BAHNHOF)) {
             throw new TurnNotPossibleException("Player (" + players[pointer].getName() + ") can not roll with two dices.");
         }
+
         Dice dice = new Dice(rollTwoDices);
-        if (player.hasProject(ProjectCardEntity.FUNKTURM)) {
-            phase = GamePhase.GEWUERFELT;
-        } else {
-            phase = GamePhase.VERARBEITUNG;
+        phase = GamePhase.GEWUERFELT;
+        // basic roll is finished
+        if (!players[pointer].hasProject(ProjectCardEntity.FUNKTURM)) {
             submitRoll(playerName, dice);
         }
     }
 
-    public void submitRoll(String playerName, Dice dice) throws TurnNotPossibleException {
-        checkPossibleTurn(playerName, WUERFELN);
-        Player player = players[pointer];
-        if (player.hasProject(ProjectCardEntity.FREIZEITPARK) && dice.isDouble()) {
-            phase = GamePhase.WUERFELN;
+    public void submitRoll(String playerName, Dice dice) throws TurnNotPossibleException, SpecialCardException {
+        checkPossibleTurn(playerName, GEWUERFELT);
+        try {
+            CardLogic.updatePlayers(players, pointer, dice);
+        } catch (SpecialCardException e) {
+            if (e.getCardEntity() == BusinessCardEntity.FERNSEHSENDER) {
+                phase = VERARBEITUNG_FERNSEHSENDER;
+            } else if (e.getCardEntity() == BusinessCardEntity.BUEROHAUS) {
+                phase = VERARBEITUNG_BUEROHAUS;
+            }
+            throw e;
+        }
+        if (players[pointer].hasProject(ProjectCardEntity.FREIZEITPARK) && dice.isDouble()) {
+            phase = WUERFELN;
         } else {
-
+            phase = KAUFEN;
         }
     }
 
+    public void skipSpecialCardTrading(String playerName) {
+        checkPossibleTurn(playerName, VERARBEITUNG_BUEROHAUS);
+        phase = KAUFEN;
+    }
+
+    public void tradeCard(String playerName, String targetPlayer, BusinessCardEntity giveCard, BusinessCardEntity getCard) {
+        checkPossibleTurn(playerName, VERARBEITUNG_BUEROHAUS);
+        //TODO
+        phase = KAUFEN;
+    }
+
+    public void steelMoney(String playerName, String targetPlayer) {
+        checkPossibleTurn(playerName, VERARBEITUNG_FERNSEHSENDER);
+        for (Player player : players) {
+            if (player.getName().equalsIgnoreCase(targetPlayer)) {
+                int stollen = player.steelMoney(5);
+                players[pointer].addMoney(stollen);
+                break;
+            }
+        }
+        phase = KAUFEN;
+    }
+
+    /**
+     * <ol>
+     *     <li>Validates the execute request.</li>
+     *     <li>Validates the availability of the card.</li>
+     *     <li>Purchases the card. Books on the Player and Board.</li>
+     *     <li>Checks if the game is over.</li>
+     *     <li>Next player can roll the dice.</li>
+     * </ol>
+     * <ul>
+     *     <li>Game Phase: {@link GamePhase#KAUFEN}</li>
+     *     <li>When the purchase is successful: Game Phase: {@link GamePhase#WUERFELN} for the next player.</li>
+     * </ul>
+     *
+     * @param playerName player identification
+     * @param card       card to be purchased
+     * @throws TurnNotPossibleException the player needs the repeat the turn.
+     * @throws GameOverException        the game is over and can be deleted.
+     */
     public void executeBuy(String playerName, BusinessCardEntity card) throws TurnNotPossibleException, GameOverException {
         checkPossibleTurn(playerName, KAUFEN);
-
+        int cardPrice = cardData.getBusinessCard(card).getPrice();
+        if (board.isCardAvailable(card) && players[pointer].getBank() >= cardPrice) {
+            board.buyCard(card);
+            players[pointer].bookPurchase(cardPrice);
+        } else {
+            throw new TurnNotPossibleException("Card can not be purchased. Try again.");
+        }
         try {
             checkIfGameIsOver();
         } catch (GameOverException e) {

@@ -34,8 +34,12 @@ public class Board {
         return this.board;
     }
 
+    public boolean isCardAvailable(BusinessCardEntity card) {
+        return board.get(card) > 0;
+    }
+
     public void buyCard(BusinessCardEntity card) throws CardNotAvailableException {
-        if (board.get(card) > 0) {
+        if (isCardAvailable(card)) {
             board.put(card, board.get(card) - 1);
         } else {
             throw new CardNotAvailableException(card, "No more cards on the board.");
