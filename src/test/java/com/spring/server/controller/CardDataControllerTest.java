@@ -15,7 +15,7 @@ import static testutils.RequestGenerator.testValidGetRequest;
 @AutoConfigureMockMvc
 @SpringBootTest(classes = {ServerApplication.class})
 @WebAppConfiguration
-public class DataControllerTest {
+public class CardDataControllerTest {
 
     @Autowired
     private MockMvc mockMvc;

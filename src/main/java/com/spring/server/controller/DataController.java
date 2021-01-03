@@ -1,7 +1,7 @@
 package com.spring.server.controller;
 
 import com.spring.server.game.BusinessCard;
-import com.spring.server.game.Data;
+import com.spring.server.game.CardData;
 import com.spring.server.game.ProjectCard;
 import com.spring.server.game.entity.BusinessCardEntity;
 import com.spring.server.game.entity.ProjectCardEntity;
@@ -16,14 +16,14 @@ import java.util.Map;
 @RestController
 public class DataController {
 
-    private final Data data = new Data();
+    private final CardData cardData = new CardData();
 
     @ApiOperation("Returns the information about a Project Card.")
     @RequestMapping(value = "/data/project-card",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ProjectCard> getProjectCard(@RequestParam(value = "name", defaultValue = "BAHNHOF") ProjectCardEntity card) {
-        return ResponseEntity.ok(data.getProjectCard(card));
+        return ResponseEntity.ok(cardData.getProjectCard(card));
     }
 
     @ApiOperation("Returns the information about a Project Card.")
@@ -31,7 +31,7 @@ public class DataController {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<BusinessCard> getBusinessCard(@RequestParam(value = "name", defaultValue = "WEIZENFELD") BusinessCardEntity card) {
-        return ResponseEntity.ok(data.getBusinessCard(card));
+        return ResponseEntity.ok(cardData.getBusinessCard(card));
     }
 
     @ApiOperation("Returns the information about all Project Cards.")
@@ -39,7 +39,7 @@ public class DataController {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Map<ProjectCardEntity, ProjectCard>> getAllProjectCards() {
-        return ResponseEntity.ok(data.getAllProjectCards());
+        return ResponseEntity.ok(cardData.getAllProjectCards());
     }
 
     @ApiOperation("Returns the information about all Business Cards.")
@@ -47,6 +47,6 @@ public class DataController {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Map<BusinessCardEntity, BusinessCard>> getAllBusinessCards() {
-        return ResponseEntity.ok(data.getAllBusinessCards());
+        return ResponseEntity.ok(cardData.getAllBusinessCards());
     }
 }

@@ -39,6 +39,13 @@ public class Player {
         return bank;
     }
 
+    /*
+    Money operations
+     */
+    public void addMoney(int value) {
+        bank += value;
+    }
+
     public void bookPurchase(int value) {
         if (bank - value < 0) {
             throw new TurnNotPossibleException(name + " got not enough Money.");
@@ -55,6 +62,9 @@ public class Player {
         return value;
     }
 
+    /*
+    Card operations
+     */
     public boolean hasProject(ProjectCardEntity card) {
         return this.projects.get(card);
     }

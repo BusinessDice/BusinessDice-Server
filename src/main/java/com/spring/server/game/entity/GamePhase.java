@@ -5,5 +5,6 @@ public enum GamePhase {
     WUERFELN,
     GEWUERFELT,
     VERARBEITUNG,
-    KAUFEN
+    KAUFEN,
+    BEENDET
 }

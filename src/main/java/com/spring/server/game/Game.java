@@ -4,10 +4,13 @@ import com.spring.server.game.entity.BusinessCardEntity;
 import com.spring.server.game.entity.GamePhase;
 import com.spring.server.game.entity.ProjectCardEntity;
 import com.spring.server.game.exception.FullGameException;
+import com.spring.server.game.exception.GameOverException;
 import com.spring.server.game.exception.IncorrectPasswordException;
 import com.spring.server.game.exception.TurnNotPossibleException;
 
 import java.util.Map;
+
+import static com.spring.server.game.entity.GamePhase.*;
 
 public class Game {
 
@@ -17,7 +20,7 @@ public class Game {
     private final Player[] players;
     private final Board board;
 
-    private final int pointer;
+    private int pointer;
     private GamePhase phase;
 
     public Game(String name, String password, int playerCount) {
@@ -45,8 +48,7 @@ public class Game {
     }
 
     public void executeRoll(String playerName, boolean rollTwoDices) throws TurnNotPossibleException {
-        checkPhase(GamePhase.VERARBEITUNG);
-        checkPlayer(playerName);
+        checkPossibleTurn(playerName, WUERFELN);
         Player player = players[pointer];
         if (rollTwoDices && !player.hasProject(ProjectCardEntity.BAHNHOF)) {
             throw new TurnNotPossibleException("Player (" + players[pointer].getName() + ") can not roll with two dices.");
@@ -61,8 +63,7 @@ public class Game {
     }
 
     public void submitRoll(String playerName, Dice dice) throws TurnNotPossibleException {
-        checkPhase(GamePhase.GEWUERFELT);
-        checkPlayer(playerName);
+        checkPossibleTurn(playerName, WUERFELN);
         Player player = players[pointer];
         if (player.hasProject(ProjectCardEntity.FREIZEITPARK) && dice.isDouble()) {
             phase = GamePhase.WUERFELN;
@@ -71,13 +72,39 @@ public class Game {
         }
     }
 
-    public void executeBuy(String playerName, BusinessCardEntity card) throws TurnNotPossibleException {
-        checkPhase(GamePhase.KAUFEN);
-        checkPlayer(playerName);
+    public void executeBuy(String playerName, BusinessCardEntity card) throws TurnNotPossibleException, GameOverException {
+        checkPossibleTurn(playerName, KAUFEN);
+
+        try {
+            checkIfGameIsOver();
+        } catch (GameOverException e) {
+            phase = BEENDET;
+            throw e;
+        }
+        pointer = pointer == players.length ? 0 : pointer++;
     }
 
-    private void updatePlayers(Dice dice) {
+    /*
+    Validation methods
+     */
 
+    private void checkIfGameIsOver() throws GameOverException {
+        for (boolean ownedProject :
+                players[pointer].getAllProjects().values()) {
+            if (!ownedProject) {
+                return;
+            }
+        }
+        throw new GameOverException(players[pointer]);
+    }
+
+    private void checkPossibleTurn(String playerName, GamePhase phase) {
+        if (!playerName.equals(this.players[pointer].getName())) {
+            throw new TurnNotPossibleException("Only '" + players[pointer].getName() + "' can do a turn.");
+        }
+        if (!this.phase.equals(phase)) {
+            throw new TurnNotPossibleException("Wrong game phase. Found: '" + phase + "'. Expected: '" + this.phase + "'.");
+        }
     }
 
     public boolean checkPassword(String password) throws IncorrectPasswordException {
@@ -88,17 +115,9 @@ public class Game {
         }
     }
 
-    private void checkPhase(GamePhase phase) throws TurnNotPossibleException {
-        if (!this.phase.equals(phase)) {
-            throw new TurnNotPossibleException("Wrong game phase (" + this.phase + ")");
-        }
-    }
-
-    private void checkPlayer(String name) throws TurnNotPossibleException {
-        if (!name.equals(this.players[pointer].getName())) {
-            throw new TurnNotPossibleException("Only '" + players[pointer].getName() + "' can do a turn.");
-        }
-    }
+    /*
+    Getter methods to create the game state
+     */
 
     public String getName() {
         return this.name;

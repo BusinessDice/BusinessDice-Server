@@ -11,12 +11,12 @@ import static com.spring.server.game.entity.BusinessCardEntity.*;
 import static com.spring.server.game.entity.CardBranch.*;
 import static com.spring.server.game.entity.ProjectCardEntity.*;
 
-public class Data {
+public class CardData {
 
     private final Map<ProjectCardEntity, ProjectCard> projectCards = new HashMap<>();
     private final Map<BusinessCardEntity, BusinessCard> businessCards = new HashMap<>();
 
-    public Data() {
+    public CardData() {
         projectCards.put(BAHNHOF,
                 new ProjectCard(ProjectCardEntity.BAHNHOF, UNTERNEHMEN, 4, "Der Spieler darf in jedem Zug neu entscheiden, ob er 1 oder 2 Wuerfel verwendet."));
         projectCards.put(EINKAUFSZENTRUM,
@@ -62,7 +62,7 @@ public class Data {
         if (projectCards.containsKey(card)) {
             return projectCards.get(card);
         } else {
-            throw new CardNotAvailableException(card, "Not found in Data.");
+            throw new CardNotAvailableException(card, "Not found in CardData.");
         }
     }
 
@@ -74,7 +74,7 @@ public class Data {
         if (businessCards.containsKey(card)) {
             return businessCards.get(card);
         } else {
-            throw new CardNotAvailableException(card, "Not found in Data.");
+            throw new CardNotAvailableException(card, "Not found in CardData.");
         }
     }
 
