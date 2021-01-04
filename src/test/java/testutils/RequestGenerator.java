@@ -16,10 +16,10 @@ public class RequestGenerator {
                 post(controllerURL)
                         .contentType(MediaType.APPLICATION_JSON)
                         .characterEncoding("UTF-8")
-                        .content(readFile(jsonDirectory + "/create.json")))
+                        .content(readFile(jsonDirectory + "/request.json")))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(readFile(jsonDirectory + "/state.json")));
+                .andExpect(content().json(readFile(jsonDirectory + "/response.json")));
     }
 
     public static void testValidPostRequestOk(MockMvc mockMvc, String controllerURL, String jsonRequest) throws Exception {
@@ -29,14 +29,6 @@ public class RequestGenerator {
                         .characterEncoding("UTF-8")
                         .content(readFile(jsonRequest)))
                 .andExpect(status().isOk());
-    }
-
-    public static void testInvalidPostRequest(MockMvc mockMvc, String controllerURL, String jsonRequest, HttpStatus expectedStatus) throws Exception {
-        mockMvc.perform(
-                post(controllerURL)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(readFile(jsonRequest)))
-                .andExpect(status().is(expectedStatus.value()));
     }
 
     public static void testValidGetRequest(MockMvc mockMvc, String controllerURL, String jsonResponse) throws Exception {

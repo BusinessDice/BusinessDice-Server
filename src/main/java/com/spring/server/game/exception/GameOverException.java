@@ -1,10 +1,9 @@
 package com.spring.server.game.exception;
 
-import com.spring.server.game.Player;
+import com.spring.server.game.cardOwner.Player;
 import lombok.Getter;
 
-public class GameOverException extends InterruptedException {
-
+public class GameOverException extends Exception {
     @Getter
     private final Player player;
 

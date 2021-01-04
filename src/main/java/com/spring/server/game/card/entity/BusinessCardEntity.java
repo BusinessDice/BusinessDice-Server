@@ -1,4 +1,4 @@
-package com.spring.server.game.entity;
+package com.spring.server.game.card.entity;
 
 public enum BusinessCardEntity {
     WEIZENFELD,         //blue - 1

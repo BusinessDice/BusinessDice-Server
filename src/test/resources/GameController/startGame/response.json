@@ -1,10 +1,11 @@
 {
-  "gameName": "game123",
-  "gamePhase": "VORBEREITUNG",
-  "activePlayerName": "player123",
+  "gameName": "game234",
+  "gamePhase": "WUERFELN",
+  "activePlayerName": "player234",
+  "dice": null,
   "players": [
     {
-      "name": "player123",
+      "name": "player234",
       "bank": 3,
       "businesses": {
         "WEIZENFELD": 1,
@@ -17,7 +18,20 @@
         "EINKAUFSZENTRUM": false
       }
     },
-    null
+    {
+      "name": "player456",
+      "bank": 3,
+      "businesses": {
+        "WEIZENFELD": 1,
+        "BAECKEREI": 1
+      },
+      "allProjects": {
+        "BAHNHOF": false,
+        "FUNKTURM": false,
+        "FREIZEITPARK": false,
+        "EINKAUFSZENTRUM": false
+      }
+    }
   ],
   "board": {
     "MINI_MARKT": 4,

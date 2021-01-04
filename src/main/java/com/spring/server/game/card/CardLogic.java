@@ -1,20 +1,22 @@
-package com.spring.server.game;
+package com.spring.server.game.card;
 
-import com.spring.server.game.entity.BusinessCardEntity;
+import com.spring.server.game.Dice;
+import com.spring.server.game.card.entity.BusinessCardEntity;
+import com.spring.server.game.cardOwner.Player;
 import com.spring.server.game.exception.SpecialCardException;
 import com.spring.server.game.exception.TurnNotPossibleException;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.spring.server.game.entity.BusinessCardEntity.*;
-import static com.spring.server.game.entity.ProjectCardEntity.EINKAUFSZENTRUM;
+import static com.spring.server.game.card.entity.BusinessCardEntity.*;
+import static com.spring.server.game.card.entity.ProjectCardEntity.EINKAUFSZENTRUM;
 
 public class CardLogic {
 
     private static final CardData cardData = new CardData();
 
-    public static void updatePlayers(Player[] players, int activePlayer, Dice dice) throws SpecialCardException {
+    public static void updatePlayers(Player[] players, int activePlayer, Dice dice) throws SpecialCardException, TurnNotPossibleException {
         for (BusinessCardEntity businessCard : findRelevantCards(dice.getValue())) {
             switch (businessCard) {
                 case WEIZENFELD:

@@ -1,4 +1,4 @@
-package com.spring.server.game.entity;
+package com.spring.server.game.card.entity;
 
 public enum CardBranch {
     UNTERNEHMEN,    //purple or project

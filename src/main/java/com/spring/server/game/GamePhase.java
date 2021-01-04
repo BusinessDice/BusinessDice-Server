@@ -1,4 +1,4 @@
-package com.spring.server.game.entity;
+package com.spring.server.game;
 
 public enum GamePhase {
     VORBEREITUNG,

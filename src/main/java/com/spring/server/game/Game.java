@@ -1,13 +1,16 @@
 package com.spring.server.game;
 
-import com.spring.server.game.entity.BusinessCardEntity;
-import com.spring.server.game.entity.GamePhase;
-import com.spring.server.game.entity.ProjectCardEntity;
+import com.spring.server.game.card.CardData;
+import com.spring.server.game.card.CardLogic;
+import com.spring.server.game.card.entity.BusinessCardEntity;
+import com.spring.server.game.card.entity.ProjectCardEntity;
+import com.spring.server.game.cardOwner.Board;
+import com.spring.server.game.cardOwner.Player;
 import com.spring.server.game.exception.*;
 
 import java.util.Map;
 
-import static com.spring.server.game.entity.GamePhase.*;
+import static com.spring.server.game.GamePhase.*;
 
 public class Game {
 
@@ -19,6 +22,7 @@ public class Game {
     private final Player[] players;
     private final Board board;
 
+    private Dice dice;
     private int pointer;
     private GamePhase phase;
 
@@ -79,15 +83,15 @@ public class Game {
             throw new TurnNotPossibleException("Player (" + players[pointer].getName() + ") can not roll with two dices.");
         }
 
-        Dice dice = new Dice(rollTwoDices);
+        dice = new Dice(rollTwoDices);
         phase = GamePhase.GEWUERFELT;
         // basic roll is finished
         if (!players[pointer].hasProject(ProjectCardEntity.FUNKTURM)) {
-            submitRoll(playerName, dice);
+            submitRoll(playerName);
         }
     }
 
-    public void submitRoll(String playerName, Dice dice) throws TurnNotPossibleException, SpecialCardException {
+    public void submitRoll(String playerName) throws TurnNotPossibleException, SpecialCardException {
         checkPossibleTurn(playerName, GEWUERFELT);
         try {
             CardLogic.updatePlayers(players, pointer, dice);
@@ -106,27 +110,39 @@ public class Game {
         }
     }
 
-    public void skipSpecialCardTrading(String playerName) {
+    public void skipSpecialCardTrading(String playerName) throws TurnNotPossibleException {
         checkPossibleTurn(playerName, VERARBEITUNG_BUEROHAUS);
         phase = KAUFEN;
     }
 
-    public void tradeCard(String playerName, String targetPlayer, BusinessCardEntity giveCard, BusinessCardEntity getCard) {
+    public void tradeCard(String playerName, String targetPlayer, BusinessCardEntity giveCard, BusinessCardEntity getCard) throws TurnNotPossibleException {
         checkPossibleTurn(playerName, VERARBEITUNG_BUEROHAUS);
-        //TODO
-        phase = KAUFEN;
+        for (Player player : players) {
+            if (player.getName().equalsIgnoreCase(targetPlayer)) {
+                if (player.hasBusiness(getCard) > 0 && players[pointer].hasBusiness(giveCard) > 0) {
+                    //TODO trade
+                    phase = KAUFEN;
+                    return;
+                } else {
+                    throw new TurnNotPossibleException("Cards for trade not available.");
+                }
+            }
+        }
+        throw new TurnNotPossibleException("Target player not found.");
     }
 
-    public void steelMoney(String playerName, String targetPlayer) {
+    public void steelMoney(String playerName, String targetPlayer) throws TurnNotPossibleException {
         checkPossibleTurn(playerName, VERARBEITUNG_FERNSEHSENDER);
         for (Player player : players) {
             if (player.getName().equalsIgnoreCase(targetPlayer)) {
                 int stollen = player.steelMoney(5);
                 players[pointer].addMoney(stollen);
+                phase = KAUFEN;
                 break;
             }
         }
-        phase = KAUFEN;
+        //TODO check for card trading
+        throw new TurnNotPossibleException("Target player not found.");
     }
 
     /**
@@ -147,21 +163,39 @@ public class Game {
      * @throws TurnNotPossibleException the player needs the repeat the turn.
      * @throws GameOverException        the game is over and can be deleted.
      */
-    public void executeBuy(String playerName, BusinessCardEntity card) throws TurnNotPossibleException, GameOverException {
+    public void executeBuyBusinessCard(String playerName, BusinessCardEntity card) throws TurnNotPossibleException, GameOverException, CardNotAvailableException {
         checkPossibleTurn(playerName, KAUFEN);
         int cardPrice = cardData.getBusinessCard(card).getPrice();
         if (board.isCardAvailable(card) && players[pointer].getBank() >= cardPrice) {
             board.buyCard(card);
             players[pointer].bookPurchase(cardPrice);
+            players[pointer].addBusiness(card);
         } else {
             throw new TurnNotPossibleException("Card can not be purchased. Try again.");
         }
+        buyPhaseTearDown();
+    }
+
+    public void executeBuyProjectCard(String playerName, ProjectCardEntity card) throws TurnNotPossibleException, GameOverException, CardNotAvailableException {
+        checkPossibleTurn(playerName, KAUFEN);
+        int cardPrice = cardData.getProjectCard(card).getPrice();
+        if (players[pointer].getBank() >= cardPrice) {
+            players[pointer].bookPurchase(cardPrice);
+            players[pointer].addProject(card);
+        } else {
+            throw new TurnNotPossibleException("Card can not be purchased. Try again.");
+        }
+        buyPhaseTearDown();
+    }
+
+    private void buyPhaseTearDown() throws GameOverException {
         try {
             checkIfGameIsOver();
         } catch (GameOverException e) {
             phase = BEENDET;
             throw e;
         }
+        dice = null;
         pointer = pointer == players.length ? 0 : pointer++;
     }
 
@@ -179,7 +213,7 @@ public class Game {
         throw new GameOverException(players[pointer]);
     }
 
-    private void checkPossibleTurn(String playerName, GamePhase phase) {
+    private void checkPossibleTurn(String playerName, GamePhase phase) throws TurnNotPossibleException {
         if (!playerName.equals(this.players[pointer].getName())) {
             throw new TurnNotPossibleException("Only '" + players[pointer].getName() + "' can do a turn.");
         }
@@ -210,6 +244,10 @@ public class Game {
 
     public String getActivePlayer() {
         return this.players[pointer].getName();
+    }
+
+    public Dice getDice() {
+        return this.dice;
     }
 
     public Player[] getPlayers() {

@@ -1,15 +1,15 @@
-package com.spring.server.game;
+package com.spring.server.game.card;
 
-import com.spring.server.game.entity.BusinessCardEntity;
-import com.spring.server.game.entity.ProjectCardEntity;
+import com.spring.server.game.card.entity.BusinessCardEntity;
+import com.spring.server.game.card.entity.ProjectCardEntity;
 import com.spring.server.game.exception.CardNotAvailableException;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.spring.server.game.entity.BusinessCardEntity.*;
-import static com.spring.server.game.entity.CardBranch.*;
-import static com.spring.server.game.entity.ProjectCardEntity.*;
+import static com.spring.server.game.card.entity.BusinessCardEntity.*;
+import static com.spring.server.game.card.entity.CardBranch.*;
+import static com.spring.server.game.card.entity.ProjectCardEntity.*;
 
 public class CardData {
 

@@ -1,5 +1,6 @@
 package com.spring.server.game;
 
+import com.spring.server.game.exception.FullGameException;
 import com.spring.server.game.exception.IncorrectPasswordException;
 
 import java.util.HashMap;
@@ -14,7 +15,7 @@ public class GameManagement {
         games = new HashMap<>();
     }
 
-    public void createGame(String name, String password, int playerCount, String playerName) {
+    public void createGame(String name, String password, int playerCount, String playerName) throws FullGameException, IncorrectPasswordException {
         Game game = new Game(name, password, playerCount);
         game.join(playerName);
         games.put(name, game);

@@ -1,7 +1,7 @@
-package com.spring.server.game;
+package com.spring.server.game.card;
 
-import com.spring.server.game.entity.CardBranch;
-import com.spring.server.game.entity.ProjectCardEntity;
+import com.spring.server.game.card.entity.CardBranch;
+import com.spring.server.game.card.entity.ProjectCardEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

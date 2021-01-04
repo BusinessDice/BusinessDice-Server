@@ -1,15 +1,16 @@
-package com.spring.server.game;
+package com.spring.server.game.cardOwner;
 
-import com.spring.server.game.entity.BusinessCardEntity;
-import com.spring.server.game.entity.ProjectCardEntity;
+import com.spring.server.game.card.entity.BusinessCardEntity;
+import com.spring.server.game.card.entity.ProjectCardEntity;
+import com.spring.server.game.exception.CardNotAvailableException;
 import com.spring.server.game.exception.TurnNotPossibleException;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.spring.server.game.entity.BusinessCardEntity.BAECKEREI;
-import static com.spring.server.game.entity.BusinessCardEntity.WEIZENFELD;
-import static com.spring.server.game.entity.ProjectCardEntity.*;
+import static com.spring.server.game.card.entity.BusinessCardEntity.BAECKEREI;
+import static com.spring.server.game.card.entity.BusinessCardEntity.WEIZENFELD;
+import static com.spring.server.game.card.entity.ProjectCardEntity.*;
 
 public class Player {
 
@@ -46,7 +47,7 @@ public class Player {
         bank += value;
     }
 
-    public void bookPurchase(int value) {
+    public void bookPurchase(int value) throws TurnNotPossibleException {
         if (bank - value < 0) {
             throw new TurnNotPossibleException(name + " got not enough Money.");
         }
@@ -69,12 +70,32 @@ public class Player {
         return this.projects.get(card);
     }
 
+    public void addProject(ProjectCardEntity card) {
+        projects.replace(card, true);
+    }
+
     public Map<ProjectCardEntity, Boolean> getAllProjects() {
         return this.projects;
     }
 
     public int hasBusiness(BusinessCardEntity card) {
-        return this.businesses.get(card);
+        return this.businesses.getOrDefault(card, 0);
+    }
+
+    public void addBusiness(BusinessCardEntity card) {
+        if (businesses.containsKey(card)) {
+            businesses.replace(card, businesses.get(card) + 1);
+        } else {
+            businesses.put(card, 1);
+        }
+    }
+
+    public void steelBusiness(BusinessCardEntity card) throws CardNotAvailableException {
+        if (hasBusiness(card) > 0) {
+            businesses.replace(card, businesses.get(card) - 1);
+        } else {
+            throw new CardNotAvailableException(card, name + " does not own card.");
+        }
     }
 
     public Map<BusinessCardEntity, Integer> getBusinesses() {

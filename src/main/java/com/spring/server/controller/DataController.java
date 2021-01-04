@@ -1,10 +1,11 @@
 package com.spring.server.controller;
 
-import com.spring.server.game.BusinessCard;
-import com.spring.server.game.CardData;
-import com.spring.server.game.ProjectCard;
-import com.spring.server.game.entity.BusinessCardEntity;
-import com.spring.server.game.entity.ProjectCardEntity;
+import com.spring.server.game.card.BusinessCard;
+import com.spring.server.game.card.CardData;
+import com.spring.server.game.card.ProjectCard;
+import com.spring.server.game.card.entity.BusinessCardEntity;
+import com.spring.server.game.card.entity.ProjectCardEntity;
+import com.spring.server.game.exception.CardNotAvailableException;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,16 +23,18 @@ public class DataController {
     @RequestMapping(value = "/data/project-card",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ProjectCard> getProjectCard(@RequestParam(value = "name", defaultValue = "BAHNHOF") ProjectCardEntity card) {
+    public ResponseEntity<ProjectCard> getProjectCard(@RequestParam(value = "name", defaultValue = "BAHNHOF") ProjectCardEntity card) throws CardNotAvailableException {
         return ResponseEntity.ok(cardData.getProjectCard(card));
+        //TODO exception handling
     }
 
     @ApiOperation("Returns the information about a Project Card.")
     @RequestMapping(value = "/data/business-card",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<BusinessCard> getBusinessCard(@RequestParam(value = "name", defaultValue = "WEIZENFELD") BusinessCardEntity card) {
+    public ResponseEntity<BusinessCard> getBusinessCard(@RequestParam(value = "name", defaultValue = "WEIZENFELD") BusinessCardEntity card) throws CardNotAvailableException {
         return ResponseEntity.ok(cardData.getBusinessCard(card));
+        //TODO exception handling
     }
 
     @ApiOperation("Returns the information about all Project Cards.")

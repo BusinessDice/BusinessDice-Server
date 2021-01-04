@@ -17,6 +17,14 @@ public class Dice {
         }
     }
 
+    public int getDice1() {
+        return this.dice1;
+    }
+
+    public int getDice2() {
+        return this.dice2;
+    }
+
     public int getValue() {
         return dice1 + dice2;
     }

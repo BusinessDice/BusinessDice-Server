@@ -1,12 +1,12 @@
-package com.spring.server.game;
+package com.spring.server.game.cardOwner;
 
-import com.spring.server.game.entity.BusinessCardEntity;
+import com.spring.server.game.card.entity.BusinessCardEntity;
 import com.spring.server.game.exception.CardNotAvailableException;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.spring.server.game.entity.BusinessCardEntity.*;
+import static com.spring.server.game.card.entity.BusinessCardEntity.*;
 
 public class Board {
 

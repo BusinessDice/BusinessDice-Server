@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static testutils.RequestGenerator.testValidGetRequest;
+import static testutils.RequestGenerator.testValidPostRequest;
 import static testutils.RequestGenerator.testValidPostRequestOk;
 
 @AutoConfigureMockMvc
@@ -21,14 +21,10 @@ public class GameControllerTest {
 
     @Test
     void createGame() throws Exception {
-        testValidPostRequestOk(
+        testValidPostRequest(
                 mockMvc,
                 "/game/create",
-                "GameController/createGame/create.json");
-        testValidGetRequest(
-                mockMvc,
-                "/game/state?gameName=game123&password=password123",
-                "GameController/createGame/state.json");
+                "GameController/createGame");
     }
 
     @Test
@@ -37,13 +33,9 @@ public class GameControllerTest {
                 mockMvc,
                 "/game/create",
                 "GameController/startGame/create.json");
-        testValidPostRequestOk(
+        testValidPostRequest(
                 mockMvc,
                 "/game/join",
-                "GameController/startGame/join.json");
-        testValidGetRequest(
-                mockMvc,
-                "/game/state?gameName=game234&password=password234",
-                "GameController/startGame/state.json");
+                "GameController/startGame");
     }
 }
