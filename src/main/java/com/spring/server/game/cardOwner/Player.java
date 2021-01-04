@@ -17,11 +17,21 @@ public class Player {
     private final String name;
     private final Map<ProjectCardEntity, Boolean> projects;
     private final Map<BusinessCardEntity, Integer> businesses;
-    private int bank;
+    private int money;
 
+    /**
+     * Start values:
+     * <ul>
+     *     <li>Money: 3</li>
+     *     <li>No Projects owned.</li>
+     *     <li>Businesses: 1x {@link BusinessCardEntity#WEIZENFELD} + 1x {@link BusinessCardEntity#BAECKEREI}</li>
+     * </ul>
+     *
+     * @param name identification value for the entire game
+     */
     public Player(String name) {
         this.name = name;
-        this.bank = 3;
+        this.money = 3;
         this.projects = new HashMap<>();
         projects.put(BAHNHOF, false);
         projects.put(EINKAUFSZENTRUM, false);
@@ -36,29 +46,29 @@ public class Player {
         return name;
     }
 
-    public int getBank() {
-        return bank;
+    public int getMoney() {
+        return money;
     }
 
     /*
     Money operations
      */
     public void addMoney(int value) {
-        bank += value;
+        money += value;
     }
 
     public void bookPurchase(int value) throws TurnNotPossibleException {
-        if (bank - value < 0) {
-            throw new TurnNotPossibleException(name + " got not enough Money.");
+        if (money - value < 0) {
+            throw new TurnNotPossibleException(name + " got not enough money for purchase.");
         }
-        bank -= value;
+        money -= value;
     }
 
     public int steelMoney(int value) {
-        bank -= value;
-        if (bank < 0) {
-            value += bank;
-            bank = 0;
+        money -= value;
+        if (money < 0) {
+            value += money;
+            money = 0;
         }
         return value;
     }

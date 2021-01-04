@@ -6,7 +6,7 @@
   "players": [
     {
       "name": "player234",
-      "bank": 3,
+      "money": 3,
       "businesses": {
         "WEIZENFELD": 1,
         "BAECKEREI": 1
@@ -20,7 +20,7 @@
     },
     {
       "name": "player456",
-      "bank": 3,
+      "money": 3,
       "businesses": {
         "WEIZENFELD": 1,
         "BAECKEREI": 1

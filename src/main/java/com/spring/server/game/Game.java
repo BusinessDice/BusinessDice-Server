@@ -166,7 +166,7 @@ public class Game {
     public void executeBuyBusinessCard(String playerName, BusinessCardEntity card) throws TurnNotPossibleException, GameOverException, CardNotAvailableException {
         checkPossibleTurn(playerName, KAUFEN);
         int cardPrice = cardData.getBusinessCard(card).getPrice();
-        if (board.isCardAvailable(card) && players[pointer].getBank() >= cardPrice) {
+        if (board.isCardAvailable(card) && players[pointer].getMoney() >= cardPrice) {
             board.buyCard(card);
             players[pointer].bookPurchase(cardPrice);
             players[pointer].addBusiness(card);
@@ -179,7 +179,7 @@ public class Game {
     public void executeBuyProjectCard(String playerName, ProjectCardEntity card) throws TurnNotPossibleException, GameOverException, CardNotAvailableException {
         checkPossibleTurn(playerName, KAUFEN);
         int cardPrice = cardData.getProjectCard(card).getPrice();
-        if (players[pointer].getBank() >= cardPrice) {
+        if (players[pointer].getMoney() >= cardPrice) {
             players[pointer].bookPurchase(cardPrice);
             players[pointer].addProject(card);
         } else {
