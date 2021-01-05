@@ -8,7 +8,7 @@ on: [ push ]
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
 
-  Build-Environment:
+  Build-and-Test:
     runs-on: ubuntu-latest
 
     steps:
@@ -24,14 +24,8 @@ jobs:
       - name: Print Environment
         run: mvn -v
 
-  Build-Project:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Build with Maven
-        run: mvn clean install test
+      - name: Build Project
+        run: mvn clean install
 
-  Test:
-    runs-on: ubuntu-latest
-    steps:
       - name: Run Tests
         run: mvn test
