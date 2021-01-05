@@ -52,8 +52,6 @@ jobs:
         with:
           push: true
           tags: GitHub/MachMiKoro:latest
-          secrets: |
-            GIT_AUTH_TOKEN=${{ secrets.MYTOKEN }}
           
       - name: Image digest output
         run: echo ${{ steps.docker_build.outputs.digest }}
