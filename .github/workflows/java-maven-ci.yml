@@ -51,7 +51,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: GitHub/MachMiKoro:latest
+          tags: felixsteinke/private:latest
           
       - name: Image digest output
         run: echo ${{ steps.docker_build.outputs.digest }}
