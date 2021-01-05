@@ -3,9 +3,10 @@
 
 ## Useful Links
 
-* Swagger: https://www.baeldung.com/swagger-2-documentation-for-spring-rest-api
-* http://localhost:8080/swagger-ui/
-* https://www.brettspiele-report.de/images/m/machi-koro/Spielanleitung-Machi-Koro.pdf
+* [Docker Image](https://hub.docker.com/r/felixsteinke/private/tags)
+* [Game Rules](https://www.brettspiele-report.de/images/m/machi-koro/Spielanleitung-Machi-Koro.pdf)
+* [Swagger Tutorial](https://www.baeldung.com/swagger-2-documentation-for-spring-rest-api)
+* Swagger: http://localhost:8080/swagger-ui/
 
 ## IntelliJ Settings:
 
