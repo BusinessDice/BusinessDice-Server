@@ -1,4 +1,5 @@
-![Java CI](https://github.com/felixsteinke/MachMiKoro/workflows/Java%20CI/badge.svg)
+![Deploy](https://github.com/felixsteinke/MachMiKoro/workflows/Deploy/badge.svg)
+![CI](https://github.com/felixsteinke/MachMiKoro/workflows/CI/badge.svg)
 
 ## Useful Links
 
