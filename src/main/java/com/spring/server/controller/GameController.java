@@ -67,13 +67,14 @@ public class GameController {
             method = RequestMethod.POST)
     public ResponseEntity<GameStateResponse> executeRoll(@RequestBody GameExecuteRequest request) {
         try {
-            gameManager.getGame(request.getGameName(), request.getPassword())
-                    .executeRoll(request.getPlayerName(), request.getExecuteProperties().isRollWithTwoDices());
+            accessGame(request).executeRoll(
+                    request.getPlayerName(),
+                    request.getExecuteProperties().isRollWithTwoDices());
         } catch (SpecialCardException | TurnNotPossibleException | IncorrectPasswordException e) {
             //TODO
             e.printStackTrace();
         }
-        return getGameState(request.getGameName(), request.getPassword());
+        return accessGameState(request);
     }
 
     @ApiOperation("Submits the roll if the players can possibly reset the roll.")
@@ -81,13 +82,12 @@ public class GameController {
             method = RequestMethod.POST)
     public ResponseEntity<GameStateResponse> submitRoll(@RequestBody GameExecuteRequest request) {
         try {
-            gameManager.getGame(request.getGameName(), request.getPassword())
-                    .submitRoll(request.getPlayerName());
+            accessGame(request).submitRoll(request.getPlayerName());
         } catch (SpecialCardException | TurnNotPossibleException | IncorrectPasswordException e) {
             //TODO
             e.printStackTrace();
         }
-        return getGameState(request.getGameName(), request.getPassword());
+        return accessGameState(request);
     }
 
     @ApiOperation("Skip the special effect of card trading.")
@@ -95,12 +95,11 @@ public class GameController {
             method = RequestMethod.POST)
     public ResponseEntity<GameStateResponse> skipTradingCard(@RequestBody GameExecuteRequest request) {
         try {
-            gameManager.getGame(request.getGameName(), request.getPassword())
-                    .skipSpecialCardTrading(request.getPlayerName());
+            accessGame(request).skipSpecialCardTrading(request.getPlayerName());
         } catch (TurnNotPossibleException | IncorrectPasswordException e) {
             e.printStackTrace();
         }
-        return getGameState(request.getGameName(), request.getPassword());
+        return accessGameState(request);
     }
 
     @ApiOperation("If a special card get rolled the target player needs to be chosen. Influenced by gameProperty: 'targetPlayerName', 'cardToTradeIn', 'cardToGetFromTrade'")
@@ -108,16 +107,16 @@ public class GameController {
             method = RequestMethod.POST)
     public ResponseEntity<GameStateResponse> tradeCard(@RequestBody GameExecuteRequest request) {
         try {
-            gameManager.getGame(request.getGameName(), request.getPassword())
-                    .tradeCard(request.getPlayerName(),
-                            request.getExecuteProperties().getTargetPlayerName(),
-                            request.getExecuteProperties().getCardToTradeIn(),
-                            request.getExecuteProperties().getCardToGetFromTrade());
+            accessGame(request).tradeCard(
+                    request.getPlayerName(),
+                    request.getExecuteProperties().getTargetPlayerName(),
+                    request.getExecuteProperties().getCardToTradeIn(),
+                    request.getExecuteProperties().getCardToGetFromTrade());
         } catch (TurnNotPossibleException | IncorrectPasswordException e) {
             e.printStackTrace();
             //TODO
         }
-        return getGameState(request.getGameName(), request.getPassword());
+        return accessGameState(request);
     }
 
     @ApiOperation("If a special card get rolled the target player needs to be chosen. Influenced by gameProperty: 'targetPlayerName'")
@@ -125,13 +124,14 @@ public class GameController {
             method = RequestMethod.POST)
     public ResponseEntity<GameStateResponse> steelMoney(@RequestBody GameExecuteRequest request) throws TurnNotPossibleException {
         try {
-            gameManager.getGame(request.getGameName(), request.getPassword())
-                    .steelMoney(request.getPlayerName(), request.getExecuteProperties().getTargetPlayerName());
+            accessGame(request).steelMoney(
+                    request.getPlayerName(),
+                    request.getExecuteProperties().getTargetPlayerName());
         } catch (IncorrectPasswordException e) {
             //TODO
             e.printStackTrace();
         }
-        return getGameState(request.getGameName(), request.getPassword());
+        return accessGameState(request);
     }
 
     @ApiOperation("Buy a business card. Influenced by gameProperty: 'buyBusinessCard'")
@@ -139,13 +139,19 @@ public class GameController {
             method = RequestMethod.POST)
     public ResponseEntity<GameStateResponse> buyCard(@RequestBody GameExecuteRequest request) {
         try {
-            gameManager.getGame(request.getGameName(), request.getPassword())
-                    .executeBuyBusinessCard(request.getPlayerName(), request.getExecuteProperties().getBuyBusinessCard());
+            accessGame(request).executeBuyBusinessCard(request.getPlayerName(), request.getExecuteProperties().getBuyBusinessCard());
         } catch (GameOverException | TurnNotPossibleException | IncorrectPasswordException | CardNotAvailableException e) {
             e.printStackTrace();
             //TODO
         }
-        return getGameState(request.getGameName(), request.getPassword());
+        return accessGameState(request);
     }
 
+    private Game accessGame(GameExecuteRequest request) throws IncorrectPasswordException {
+        return gameManager.getGame(request.getGameName(), request.getPassword());
+    }
+
+    private ResponseEntity<GameStateResponse> accessGameState(GameExecuteRequest request) {
+        return getGameState(request.getGameName(), request.getPassword());
+    }
 }
