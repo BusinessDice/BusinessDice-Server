@@ -1,8 +1,6 @@
 ![Deploy](https://github.com/felixsteinke/MachMiKoro/workflows/Deploy/badge.svg)
 ![CI](https://github.com/felixsteinke/MachMiKoro/workflows/CI/badge.svg)
 
-![MachMiKoro Logo][./src/main/resources/static/MachMiKoro-Logo.png]
-
 <img src="src/main/resources/static/MachMiKoro-Logo.png"
 alt="MachMiKoro Logo"
 style="float: left; margin-right: 10px;" />
