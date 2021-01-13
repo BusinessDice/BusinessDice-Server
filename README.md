@@ -1,5 +1,5 @@
-![Deploy](https://github.com/felixsteinke/MachMiKoro/workflows/Deploy/badge.svg)
-![CI](https://github.com/felixsteinke/MachMiKoro/workflows/CI/badge.svg)
+![Deploy](https://github.com/MachMiKoro/MachMiKoro-Server/workflows/Deploy/badge.svg)
+![CI](https://github.com/MachMiKoro/MachMiKoro-Server/workflows/CI/badge.svg)
 
 <img src="src/main/resources/static/MachMiKoro-Logo.png"
 alt="MachMiKoro Logo"
