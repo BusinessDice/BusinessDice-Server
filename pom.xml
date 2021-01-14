@@ -9,7 +9,7 @@
         <relativePath/><!-- lookup parent from repository -->
     </parent>
     <groupId>com.spring</groupId>
-    <artifactId>server</artifactId>
+    <artifactId>MachMiKoro-Server</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>MachMiKoro-Server</name>
     <description>Demo project for Spring Boot</description>
