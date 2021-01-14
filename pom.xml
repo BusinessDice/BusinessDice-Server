@@ -11,7 +11,7 @@
     <groupId>com.spring</groupId>
     <artifactId>server</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>server</name>
+    <name>MachMiKoro-Server</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
