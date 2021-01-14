@@ -1,6 +1,5 @@
 ![Deploy](https://github.com/MachMiKoro/MachMiKoro-Server/workflows/Deploy/badge.svg)
 ![CI](https://github.com/MachMiKoro/MachMiKoro-Server/workflows/CI/badge.svg)
-![Wakatime](https://github.com/MachMiKoro/MachMiKoro-Server/workflows/Wakatime/badge.svg)
 
 <img src="src/main/resources/static/MachMiKoro-Logo.png"
 alt="MachMiKoro Logo"
