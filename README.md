@@ -17,3 +17,8 @@ style="float: left; margin-right: 10px;" />
 * [Deployment Tutorial](https://github.com/soumilshah1995/Deploy-Docker-Container-on-AWS)
 * [Lombok Plugin](https://plugins.jetbrains.com/plugin/6317-lombok)
 * [Time Tracking](https://wakatime.com/intellij-idea)
+
+## Time Tracking
+
+<!--START_SECTION:waka-->
+<!--END_SECTION:waka-->
