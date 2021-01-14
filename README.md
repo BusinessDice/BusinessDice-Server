@@ -17,10 +17,5 @@ style="float: left; margin-right: 10px;" />
 * [Game Rules](https://www.brettspiele-report.de/images/m/machi-koro/Spielanleitung-Machi-Koro.pdf)
 * [Deployment Tutorial](https://github.com/soumilshah1995/Deploy-Docker-Container-on-AWS)
 * [Lombok Plugin](https://plugins.jetbrains.com/plugin/6317-lombok)
-* [Time Tracking](https://wakatime.com/intellij-idea)
-* [Import Time Tracking](https://github.com/anmol098/waka-readme-stats)
-
-## Metrics
-
-<!--START_SECTION:waka-->
-<!--END_SECTION:waka-->
+* [Time Tracking (excluded)](https://wakatime.com/intellij-idea)
+* [Import Time Tracking (excluded)](https://github.com/anmol098/waka-readme-stats)
