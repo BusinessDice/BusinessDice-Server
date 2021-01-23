@@ -44,11 +44,11 @@ jobs:
         uses: fifsky/ssh-action@master
         with:
           command: |
-            sudo docker kill BusinessDice-Server
-            sudo docker rm BusinessDice-Server
-            sudo docker rmi BusinessDice-Server
-            sudo docker pull felixsteinke/private:BusinessDice-Server
-            sudo docker run --name BusinessDice-Server -p 443:8080 felixsteinke/private:BusinessDice-Server
+            sudo docker kill business-dice-server # kill running container
+            sudo docker rm business-dice-server # remove old container
+            sudo docker rmi business-dice-server # remove old image
+            sudo docker pull felixsteinke/private:BusinessDice-Server # get new image
+            sudo docker run -d --name business-dice-server -p 443:8080 felixsteinke/private:BusinessDice-Server # start container in background on host port 443
           host: ${{ secrets.BW_CLOUD_IP }}
           user: ${{ secrets.BW_CLOUD_USER }}
           key: ${{ secrets.BW_CLOUD_PRIVATE_KEY}}
