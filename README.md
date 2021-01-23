@@ -1,5 +1,6 @@
 ![Deploy](https://github.com/BusinessDice/BusinessDice-Server/workflows/Deploy/badge.svg)
 ![CI](https://github.com/BusinessDice/BusinessDice-Server/workflows/CI/badge.svg)
+[![Coverage](https://codecov.io/gh/BusinessDice/BusinessDice-Server/branch/master/graph/badge.svg)](https://codecov.io/gh/BusinessDice/BusinessDice-Server)
 
 <img src="src/main/resources/static/BusinessDice-Logo.png"
 alt="BusinessDice Logo"
@@ -18,3 +19,4 @@ style="float: left; margin-right: 10px;" />
 * [Lombok Plugin](https://plugins.jetbrains.com/plugin/6317-lombok)
 * [Time Tracking (excluded)](https://wakatime.com/intellij-idea)
 * [Import Time Tracking (excluded)](https://github.com/anmol098/waka-readme-stats)
+* [CodeCoverageRepo](https://about.codecov.io/)
