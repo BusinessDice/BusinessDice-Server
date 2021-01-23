@@ -13,7 +13,7 @@ on:
               - master
 
 jobs:
-  Deploy-on-DockerHub:
+  Docker-Image-and-SSH-Deployment:
     runs-on: ubuntu-latest
 
     steps:
@@ -44,10 +44,13 @@ jobs:
         uses: fifsky/ssh-action@master
         with:
           command: |
-            sudo docker kill business-dice-server # kill running container
-            sudo docker rm business-dice-server # remove old container
-            sudo docker rmi business-dice-server # remove old image
-            sudo docker pull felixsteinke/private:BusinessDice-Server # get new image
+            echo "[INFO] Stop running container:"
+            sudo docker kill business-dice-server
+            echo "[INFO] Delete old container:"
+            sudo docker rm business-dice-server
+            echo "[INFO] Pull new image:"
+            sudo docker pull felixsteinke/private:BusinessDice-Server
+            echo "[INFO] Run new image:"
             sudo docker run -d --name business-dice-server -p 443:8080 felixsteinke/private:BusinessDice-Server # start container in background on host port 443
           host: ${{ secrets.BW_CLOUD_IP }}
           user: ${{ secrets.BW_CLOUD_USER }}
