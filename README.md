@@ -18,3 +18,4 @@ style="float: left; margin-right: 10px;" />
 * [Lombok Plugin](https://plugins.jetbrains.com/plugin/6317-lombok)
 * [Time Tracking (excluded)](https://wakatime.com/intellij-idea)
 * [Import Time Tracking (excluded)](https://github.com/anmol098/waka-readme-stats)
+* [CodeCoverageRepo](https://about.codecov.io/)
