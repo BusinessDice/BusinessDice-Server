@@ -11,4 +11,4 @@ MAINTAINER Felix Steinke <steinke.felix@yahoo.com>
 EXPOSE 8080
 COPY --from=builder /root/app/ /home/app/
 WORKDIR /home/app
-ENTRYPOINT ["java","-jar", "-Xmx15m", "./target/MachMiKoro-Server-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java","-jar", "-Xmx15m", "./target/BusinessDice-Server-0.0.1-SNAPSHOT.jar"]

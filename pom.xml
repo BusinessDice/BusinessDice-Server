@@ -9,9 +9,9 @@
         <relativePath/><!-- lookup parent from repository -->
     </parent>
     <groupId>com.spring</groupId>
-    <artifactId>MachMiKoro-Server</artifactId>
+    <artifactId>BusinessDice-Server</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>MachMiKoro-Server</name>
+    <name>BusinessDice-Server</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
