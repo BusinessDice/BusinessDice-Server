@@ -83,7 +83,6 @@
             <artifactId>spring-beans</artifactId>
             <version>5.2.12.RELEASE</version>
         </dependency>
-
         <!-- Spring -->
 
         <!-- JUnit -->
@@ -105,22 +104,27 @@
         </dependency>
         <!-- JSON -->
 
+        <!-- File Utility -->
         <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
             <version>2.14.0</version>
         </dependency>
+        <!-- File Utility -->
     </dependencies>
 
     <build>
         <plugins>
+            <!-- Spring -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>2.3.5.RELEASE</version>
             </plugin>
+            <!-- Spring -->
 
+            <!-- Coverage Report -->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
@@ -137,13 +141,15 @@
                         <goals>
                             <goal>report</goal>
                         </goals>
-                        <!-- default target/jscoco/site/**  -->
+                        <!-- default target/jacoco/site/**  -->
                         <configuration>
                             <outputDirectory>target/jacoco-report</outputDirectory>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
+            <!-- Coverage Report -->
         </plugins>
     </build>
+
 </project>
