@@ -57,7 +57,7 @@ public class CardDataControllerTest {
         testInvalidGetRequest(
                 mockMvc,
                 "/data/business-card?name=noName",
-                HttpStatus.BAD_REQUEST);
+                HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Test
@@ -65,6 +65,6 @@ public class CardDataControllerTest {
         testInvalidGetRequest(
                 mockMvc,
                 "/data/project-card?name=noName",
-                HttpStatus.BAD_REQUEST);
+                HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
