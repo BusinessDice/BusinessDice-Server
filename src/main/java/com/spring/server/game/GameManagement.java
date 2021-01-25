@@ -2,12 +2,18 @@ package com.spring.server.game;
 
 import com.spring.server.game.exception.FullGameException;
 import com.spring.server.game.exception.IncorrectPasswordException;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
 
-
+@Component
 public class GameManagement {
+
+    //TODO add GameManagement into a database
+    @Value("${database-url}")
+    private String databaseURL;
 
     private final Map<String, Game> games;
 

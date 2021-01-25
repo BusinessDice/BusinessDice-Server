@@ -76,6 +76,14 @@
                 </exclusion>
             </exclusions>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-beans -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <version>5.2.12.RELEASE</version>
+        </dependency>
+
         <!-- Spring -->
 
         <!-- JUnit -->

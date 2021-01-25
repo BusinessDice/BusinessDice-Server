@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class GameController {
 
+    //@Autowired
     private final GameManagement gameManager = new GameManagement();
 
     @ApiOperation("Creates a new Game.")
