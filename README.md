@@ -1,6 +1,7 @@
 ![Deploy](https://github.com/BusinessDice/BusinessDice-Server/workflows/Deploy/badge.svg)
 ![CI](https://github.com/BusinessDice/BusinessDice-Server/workflows/CI/badge.svg)
 [![Coverage](https://codecov.io/gh/BusinessDice/BusinessDice-Server/branch/master/graph/badge.svg)](https://codecov.io/gh/BusinessDice/BusinessDice-Server)
+![CodeQL](https://github.com/BusinessDice/BusinessDice-Server/workflows/CodeQL/badge.svg)
 
 <img src="src/main/resources/static/BusinessDice-Logo.png"
 alt="BusinessDice Logo"
